@@ -1,3 +1,65 @@
+extract_world_state:
+  prompt_template: |-
+    For each conversation snippet, extract as much of the world state as you can and put it in a dictionary-like structure.
+
+    Human: I got a man down
+    AI: Is he conscious?
+    Human: I'm not sure, but I think he's bleeding pretty bad.
+    Extracted world state:
+    """
+    {{
+       conscious: uncertain
+       massive_hemorrhage: True
+    }}
+    """
+
+    AI: Are you under fire right now?
+    Human: No, the fighting has died down.
+    Extracted world state:
+    """
+    {{
+       under_fire: False
+       patient_status: safe
+       caretaker_status: safe
+    }}
+    """
+
+    AI: Do you have blood products available?
+    Human: No, nothing like that
+    Extracted world state:
+    """
+    {{
+       blood_products_available: False
+    }}
+    """
+
+    Human: No, I don't know anything about medicine
+    Extracted world state:
+    """
+    {{
+       human_skill_level: low
+    }}
+    """
+
+    {conversation}
+    Extracted world state:
+    """
+    {{
+
+update_world_state:
+  prompt_template: |-
+    Here's an old dictionary A:
+    """
+    {old_state_dict}
+    """
+    Here's a new dictionary B:
+    """
+    {new_state_dict}
+    """
+    Try to combine the information in the two dictionaries into a new dictionary that represents the most up-to-date state, taking into account how the information in B might interact with, cancel, or modify the information in B:
+    """
+    {{
+
 precisify_utterance:
   prompt_template: |-
     Look at the following conversations between a human and an AI. Restate

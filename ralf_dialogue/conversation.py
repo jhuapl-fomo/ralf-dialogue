@@ -40,5 +40,13 @@ class Conversation():
 
         return '\n'.join(result)
 
+    def to_str_double_newline(self):
+        result = []
+
+        for turn in self.history:
+            result.append(str(turn))
+
+        return '\n\n'.join(result)
+
     def __repr__(self):
         return self.__str__()
