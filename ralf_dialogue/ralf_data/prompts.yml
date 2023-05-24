@@ -1,0 +1,88 @@
+precisify_utterance:
+  prompt_template: |-
+    Look at the following conversations between a human and an AI. Restate
+    the last thing the user said as precisely as possible. If it is already clear,
+    do not modify it.
+
+    """
+
+    Human: What was the weather like on June 14 of last year?
+
+    AI: It was warm and sunny, with temperatures about 78 degrees F.
+
+    Human: And yesterday?
+
+    """
+
+    Restatement: And what was the weather like yesterday?
+
+
+    Look at the following conversations between a human and an AI. Restate the last
+    thing the user said as precisely as possible. If it is already clear, do not modify
+    it.
+
+    """
+
+    Human: Hello! How are you?
+
+    AI: I''m doing well. Thanks for asking. How are you doing?
+
+    Human: I''m fine. I wanted to ask you a question.
+
+    AI: Go ahead.
+
+    Human: What is the largest country in the world by area?
+
+    """
+
+    Restatement: What is the largest country in the world by area?
+
+
+    Look at the following conversations between a human and an AI. Restate the last
+    thing the user said as precisely as possible. If it is already clear, do not modify
+    it.
+
+    """
+
+    Human: What are you doing tomorrow?
+
+    AI: Not much -- what about you?
+
+    Human: Oh, tomorrow''s my day off. Just relaxing.
+
+    AI: That''s great. Always good to take a rest.
+
+    Human: Agreed. Hey, who''s the current president, by the way?
+
+    AI: That''d be Joe Biden.
+
+    Human: Oh. Gotcha. And the previous one?
+
+    """
+
+    Restatement: Oh. Gotcha. And who was the previous president?
+
+
+    Look at the following conversations between a human and an AI. Restate the last
+    thing the user said as precisely as possible. If it is already clear, do not modify
+    it.
+
+    """"
+
+    Human: There's a truck approaching us from down the road
+    Human: Actually, it turned right
+
+    """"
+
+    Restatement: The truck that was previously approaching us actually turned right instead.
+
+
+    Look at the following conversations between a human and an AI. Restate the last
+    thing the user said as precisely as possible. If it is already clear, do not modify
+    it.
+
+    """
+    {conversation_text}
+    """
+
+    Restatement:
