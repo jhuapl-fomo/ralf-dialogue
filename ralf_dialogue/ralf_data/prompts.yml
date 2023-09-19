@@ -148,3 +148,22 @@ precisify_utterance:
     """
 
     Restatement:
+
+precisify_utterance2:
+  prompt_template: |-
+    Look at the following conversations between a human and an AI. Restate
+    the last thing the human said as precisely as possible. If it is already clear,
+    do not modify it. Make sure to keep the restatement in the voice of the human.
+
+    Here is an example:
+    """
+    AI: Is the casualty able to walk on their own?
+    Human: I'm not sure.
+    """
+    Restatement: I'm not sure whether the casualty can walk on their own.
+
+    Now restate the human's last utterance in the following conversation, if necessary:
+    """
+    {conversation_text}
+    """
+    Restatement:
