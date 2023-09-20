@@ -161,9 +161,9 @@ class Conversation:
     
         for turn in self.history:
             if turn.speaker == self.ai_attribution:
-                role = 'user'
-            elif turn.speaker == self.human_attribution:
                 role = 'assistant'
+            elif turn.speaker == self.human_attribution:
+                role = 'user'
             else:
                 raise ValueError(
                     f"Invalid speaker {turn.speaker} provided in conversation."
