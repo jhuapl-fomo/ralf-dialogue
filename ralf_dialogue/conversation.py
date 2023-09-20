@@ -19,6 +19,7 @@
 # SOFTWARE.
 
 from typing import Optional
+import ralf.utils as ru
 
 class Turn:
     """
@@ -71,14 +72,56 @@ class Conversation:
         self.ai_attribution = ai_attribution
         self.human_attribution = human_attribution
 
-    def add(self, speaker: str, utterance: str) -> None:
+    def add(self,
+            speaker: str,
+            utterance: str,
+            return_turn: bool = False
+        ) -> Optional[Turn]:
         """
         Adds a new turn to the conversation history.
 
         :param speaker: The speaker of the turn.
+        :type speaker: str
         :param utterance: The utterance made by the speaker.
+        :type utterance: str
+        :param return_turn: Whether to return the turn just added to history
+        :type utterance: bool
+        :return: The turn object that was just added
+        :rtype: Optional[Turn]
         """
         self.history.append(Turn(speaker, utterance))
+
+        return self.history[-1] if return_turn else None
+
+    def add_human_turn(self,
+                       utterance: str,
+                       return_turn: Optional[bool] = False
+        ) -> Optional[Turn]:
+        """
+        Adds a human turn to the conversation history
+
+        :param utterance: The utterance made by the human
+        :type utterance: str
+        :param return_turn: Whether to return the turn just added to history
+        :type utterance: bool
+        """
+
+        return self.add(self.human_attribution, utterance, return_turn=return_turn)
+
+    def add_ai_turn(self,
+                    utterance: str,
+                    return_turn: Optional[bool] = False
+        ) -> Optional[Turn]:
+        """
+        Adds an AI turn to the conversation history
+
+        :param utterance: The utterance made by the AI
+        :type utterance: str
+        :param return_turn: Whether to return the turn just added to history
+        :type utterance: bool
+        """
+
+        return self.add(self.ai_attribution, utterance, return_turn=return_turn)
 
     def get_last_user_turn(self) -> Optional[Turn]:
         """
@@ -99,6 +142,36 @@ class Conversation:
         :rtype: list[str]
         """
         return [str(turn) for turn in self.history]
+    
+    def to_messages(
+            self,
+            system_message: str = ru.cfg['default_system_message']
+        ) -> list[dict]:
+        """
+        Converts the conversation into a messages list for use with OpenAI's
+        ChatCompletion models.
+
+        :param system_message: system messsage to use for ChatCompletion call
+        :return: a list of messages in the conversation
+        :rtype: list[dict]
+        """
+
+        messages = []
+        messages.append({'role': 'system', 'content': system_message})
+    
+        for turn in self.history:
+            if turn.speaker == self.ai_attribution:
+                role = 'user'
+            elif turn.speaker == self.human_attribution:
+                role = 'assistant'
+            else:
+                raise ValueError(
+                    f"Invalid speaker {turn.speaker} provided in conversation."
+                )
+            messages.append({'role': role, 'content': turn.utterance})
+
+        return messages
+
 
     def __str__(self) -> str:
         """
@@ -140,3 +213,13 @@ class Conversation:
         :rtype: str
         """
         return self.__str__()
+    
+    def __len__(self) -> int:
+        """
+        Returns the length of the conversation, which is the number of turns
+
+        :return: number of turns in the conversation
+        :rtype: int
+        """
+
+        return len(self.history)
