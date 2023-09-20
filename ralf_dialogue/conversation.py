@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from typing import Optional
+from typing import Optional, Literal
 import ralf.utils as ru
 
 class Turn:
@@ -59,7 +59,9 @@ class Conversation:
         self,
         history: Optional[list[Turn]] = None,
         ai_attribution: str = 'AI',
-        human_attribution: str = 'Human'
+        human_attribution: str = 'Human',
+        trim_method: Literal['tokens', 'turns'] = 'turns',
+        max_length: int = 100
     ) -> None:
         """
         Initializes a new Conversation object.
@@ -71,7 +73,44 @@ class Conversation:
         self.history = history if history else []
         self.ai_attribution = ai_attribution
         self.human_attribution = human_attribution
+        self.trim_method = trim_method
+        self.max_length = max_length
 
+    def __str__(self) -> str:
+        """
+        Returns a string representation of the conversation by joining turn 
+        strings with newline.
+
+        :return: A string representation of the conversation.
+        :rtype: str
+        """
+        result = []
+
+        for turn in self.history:
+            result.append(str(turn))
+
+        return '\n'.join(result)
+
+    def __repr__(self) -> str:
+        """
+        Returns a string representation of the conversation, which is the same 
+        as __str__().
+
+        :return: A string representation of the conversation.
+        :rtype: str
+        """
+        return self.__str__()
+    
+    def __len__(self) -> int:
+        """
+        Returns the length of the conversation, which is the number of turns
+
+        :return: number of turns in the conversation
+        :rtype: int
+        """
+
+        return len(self.history)
+    
     def add(self,
             speaker: str,
             utterance: str,
@@ -90,6 +129,12 @@ class Conversation:
         :rtype: Optional[Turn]
         """
         self.history.append(Turn(speaker, utterance))
+
+        # Automatically trim the conversation after adding a turn
+        self.trim(method=self.trim_method,
+                  max_length=self.max_length,
+                  as_messages=True
+        )
 
         return self.history[-1] if return_turn else None
 
@@ -152,6 +197,8 @@ class Conversation:
         ChatCompletion models.
 
         :param system_message: system messsage to use for ChatCompletion call
+        :type system_message: str
+
         :return: a list of messages in the conversation
         :rtype: list[dict]
         """
@@ -172,22 +219,6 @@ class Conversation:
 
         return messages
 
-
-    def __str__(self) -> str:
-        """
-        Returns a string representation of the conversation by joining turn 
-        strings with newline.
-
-        :return: A string representation of the conversation.
-        :rtype: str
-        """
-        result = []
-
-        for turn in self.history:
-            result.append(str(turn))
-
-        return '\n'.join(result)
-
     def to_str_double_newline(self) -> str:
         """
         Returns a string representation of the conversation by joining turn 
@@ -203,23 +234,69 @@ class Conversation:
             result.append(str(turn))
 
         return '\n\n'.join(result)
-
-    def __repr__(self) -> str:
-        """
-        Returns a string representation of the conversation, which is the same 
-        as __str__().
-
-        :return: A string representation of the conversation.
-        :rtype: str
-        """
-        return self.__str__()
     
-    def __len__(self) -> int:
+    def token_count(self, as_messages: bool = True) -> int:
         """
-        Returns the length of the conversation, which is the number of turns
+        Get the current token count of the conversation.
 
-        :return: number of turns in the conversation
+        This method calculates the total number of tokens in the conversation's
+        history. You can choose to count tokens from either the conversation's
+        messages or string representation.
+
+        :param as_messages: If True, count tokens via messages representation
+                            If False, count tokens from raw string representation
+        :type as_messages: bool
+
+        :return: The total token count.
         :rtype: int
         """
+        if as_messages:
+            num_tokens = ru.num_tokens_from_messages(self.to_messages())
+        else:
+           num_tokens = ru.num_tokens_from_str(str(self)) 
 
-        return len(self.history)
+        return num_tokens
+    
+    def trim(self,
+             method: Literal['tokens', 'turns'] = 'turns',
+             max_length: int = 100,
+             as_messages: bool = True,
+             summarize: bool = False
+        ) -> None:
+        """
+        Trim the conversation to maintain a specified maximum length, either
+        in terms of tokens or number of turns. Used internally, but can also
+        be used externally to manually trim the conversation.
+
+        :param method: Method to use for trimming. Options are 'tokens' or 'turns'.
+        :type method: Literal['tokens', 'turns']
+        :param max_length: The maximum length to maintain (either tokens or turns).
+        :type max_length: int
+        :param as_messages: If True, count tokens based on messages.
+                            If False, count tokens based on string representation.
+        :type as_messages: bool
+
+        :param summarize: If True, perform summarization during trimming (not implemented).
+        :type summarize: bool
+        
+        :raises NotImplementedError: If summarize is True (summarization not implemented).
+        :raises ValueError: If an invalid trim method is specified.
+        """
+
+        if summarize:
+            raise NotImplementedError(
+                "Trimming conversation with summarization not yet implemented.")
+        
+        if method == 'tokens':
+            # Trim based on the number of tokens in the conversation history
+            while self.token_count(as_messages=as_messages) > max_length and len(self) > 0:
+                # Remove the oldest turn until the token count is within limits
+                self.history.pop(0)
+    
+        elif method == 'turns':
+            # Trim based on the number of turns in the conversation history
+            while len(self) > max_length:
+                # Remove the oldest turn until turn count is within limits
+                self.history.pop(0) 
+        else:
+            raise ValueError(f"Invalid trim method '{method}' specified. Use 'tokens' or 'turns'.")

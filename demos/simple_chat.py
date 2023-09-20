@@ -1,12 +1,16 @@
+"""
+A simple chat interface built using ralf and ralf-dialogue.
+"""
+
 from ralf.dispatcher import Action
 from ralf_dialogue import Conversation
 from termcolor import colored
 
-# Create the conversation object
-conversation = Conversation()
-
-# Provide a system message that will dictate the assistant's behavior
+# Provide a system message that will condition the AI's responses
 system_msg = "You are a helpful assistant that speaks with a pirate accent."
+
+# Create the conversation object
+conversation = Conversation(trim_method='tokens', max_length=4097)
 
 while True:
     # Get input from the user and add it to the conversation
