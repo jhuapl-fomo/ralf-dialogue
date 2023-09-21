@@ -1,4 +1,7 @@
-# `ralf-dialogue`
+<div align="center">
+<img alt="ralf-dialogue_logo" src="https://github.com/jhuapl-fomo/ralf-dialogue/blob/main/assets/ralf-dialogue_logo_v1.png" width="200">
+  
+# ralf-dialogue
 
 [![Documentation](https://readthedocs.org/projects/ralf-jhuapl/badge/?version=latest)](https://ralf-jhuapl.readthedocs.io/en/latest/)
 [![PyPI version](https://badge.fury.io/py/ralf-dialogue-jhuapl.svg)](https://badge.fury.io/py/ralf-dialogue-jhuapl)
