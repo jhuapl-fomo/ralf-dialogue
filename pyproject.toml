@@ -3,22 +3,21 @@ build-backend = "flit_core.buildapi"
 requires = ["flit_core >=3.7.1,<4"]
 
 [project]
-name = "ralf_dialogue"
-description = "A library to support the development of dialogue agents using LLMs + RALF."
+name = "ralf-dialogue-jhuapl"
+description = "An extension of the ralf toolkit with convenient primitives for building LLM-based dialogue agents."
 readme = "README.md"
 # license = "MIT"
 dependencies = [
     "openai",
-    # "plotly",
-    # "transformers"
+    "ralf-jhuapl",
+    "termcolor",
 ]
 dynamic = [
     "version",
 ]
 requires-python = ">=3.9"
 authors = [
-  { name = "Samuel Barham", email = "samuel.barham@jhuapl.edu" },
-  { name = "Arun Reddy", email = "arun.reddy@jhuapl.edu" },
+  { name = "JHUAPL", email = "ralf@jhuapl.edu" },
 ]
 maintainers = [
 ]
@@ -27,3 +26,10 @@ classifiers = [
     "Operating System :: OS Independent",
     "License :: OSI Approved :: MIT License"
 ]
+
+[project.urls]
+Documentation = "https://ralf-test.readthedocs.io/en/latest/"
+Source = "https://github.com/jhuapl-fomo/ralf-dialogue"
+
+[tool.flit.module]
+name = "ralf_dialogue"

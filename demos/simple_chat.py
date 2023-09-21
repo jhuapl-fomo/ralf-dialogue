@@ -26,3 +26,7 @@ while True:
     # Add and display the AI turn
     ai_turn = conversation.add_ai_turn(ai_utterance, return_turn=True)
     print(f"{colored(ai_turn.speaker+':', 'green', attrs=['bold'])} {ai_turn.utterance}")
+
+print('')
+print('='*20, 'Conversation History', '='*20)
+print(conversation)

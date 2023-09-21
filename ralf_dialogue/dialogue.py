@@ -23,7 +23,6 @@ from pathlib import Path
 
 from ralf.dispatcher import ActionDispatcher, Action
 
-# Create a dispatcher for ralf to use internally (TODO: move this?)
 ralf_dir = Path(__file__).parent / 'ralf_data'
 ad = ActionDispatcher(dir=ralf_dir)
 
@@ -36,5 +35,4 @@ def disambiguate(conversation):
         context={'conversation_text' : str(conversation)}  
     )['output']
     
-
     return disambiguated_utterance

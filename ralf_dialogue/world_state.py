@@ -29,7 +29,7 @@ from pathlib import Path
 
 # Ours
 from ralf.dispatcher import Action, ActionDispatcher
-import ralf.utils as utils
+import ralf.utils as ru
 
 
 #############
@@ -71,7 +71,7 @@ class WorldState(dict):
         self.path_to_init = path_to_init
 
         if path_to_init is not None:
-            init_dict = utils.load_yaml(path_to_init)
+            init_dict = ru.load_yaml(path_to_init)
             kwargs.update(init_dict)
 
         super().__init__(**kwargs)
@@ -85,7 +85,7 @@ class WorldState(dict):
         )
         extracted_state = output["output"]
 
-        extracted_state = utils.str_to_dict_safe(extracted_state)
+        extracted_state = ru.str_to_dict_safe(extracted_state)
 
         return extracted_state
 
@@ -99,7 +99,7 @@ class WorldState(dict):
         )
         new_world_state = output["output"]
 
-        new_world_state = utils.str_to_dict_safe(new_world_state)
+        new_world_state = ru.str_to_dict_safe(new_world_state)
 
         self.clear()
 

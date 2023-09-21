@@ -34,17 +34,7 @@ class IntentClassifier:
         self.zs_classifier = classifier.ZeroShotClassifier()
 
         for intent, examples in intents.items():
-            if intent == "emphasis":
-                for example_index in range(0,len(examples),2):
-                    self.zs_classifier.add_emphasis(
-                        examples[example_index],
-                        examples[example_index+1]
-                    )
-            else:
-                self.zs_classifier.add_class(
-                intent,
-                examples
-            )
+            self.zs_classifier.add_class(intent, examples)
 
     def __call__(self, utterance) -> tuple[str, str]:
         return self.evaluate(utterance)

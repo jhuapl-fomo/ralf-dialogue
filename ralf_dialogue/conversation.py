@@ -168,7 +168,7 @@ class Conversation:
 
         return self.add(self.ai_attribution, utterance, return_turn=return_turn)
 
-    def get_last_user_turn(self) -> Optional[Turn]:
+    def get_last_human_turn(self) -> Optional[Turn]:
         """
         Retrieves the last user turn from the conversation history.
 
@@ -278,7 +278,7 @@ class Conversation:
 
         :param summarize: If True, perform summarization during trimming (not implemented).
         :type summarize: bool
-        
+
         :raises NotImplementedError: If summarize is True (summarization not implemented).
         :raises ValueError: If an invalid trim method is specified.
         """
@@ -289,7 +289,8 @@ class Conversation:
         
         if method == 'tokens':
             # Trim based on the number of tokens in the conversation history
-            while self.token_count(as_messages=as_messages) > max_length and len(self) > 0:
+            while (
+                self.token_count(as_messages=as_messages) > max_length and len(self) > 0):
                 # Remove the oldest turn until the token count is within limits
                 self.history.pop(0)
     
@@ -299,4 +300,6 @@ class Conversation:
                 # Remove the oldest turn until turn count is within limits
                 self.history.pop(0) 
         else:
-            raise ValueError(f"Invalid trim method '{method}' specified. Use 'tokens' or 'turns'.")
+            raise ValueError(
+                f"Invalid trim method '{method}' specified. Use 'tokens' or 'turns'."
+            )
