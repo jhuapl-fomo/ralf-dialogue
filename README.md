@@ -31,52 +31,59 @@ building conversational agents (or "chatbots") that can interact with users in n
 leveraging context and accessing external knowledge stores or reasoning engines. Many of these
 components are still under active construction, and we're always looking for talented contributors.
 
-## Getting started
+## Quickstart Guide
+This quickstart guide is intended to get you up and running with **ralf** within
+a few minutes.
+### Installation
 
-Create a new Conda environment (or equivalent) containing Python 3.9 and switch to it:
-```bash
-conda create -n [ralf-env-name] python=3.9
-conda activate [ralf-env-name]
-```
+We recommend creating a Conda environment before installing the package:
 
-Make sure you have the RALF library cloned and installed:
-```bash
-git clone git@github.com:jhuapl-fomo/ralf.git
-cd ralf
-pip install -r requirements.txt
-flit build
-pip install -e .
-```
+    conda create -n ralf python=3.10
+    conda activate ralf
 
-Next, make sure you have this repo (the RALF Dialogue repo) cloned into a local directory, and then navigate into
-it and repeat the same steps you followed above:
-```bash
-git clone git@github.com:jhuapl-fomo/ralf-dialogue.git
-cd ralf-dialogue
-pip install -r requirements.txt
-flit build
-pip install -e .
-```
+#### Install from PyPI
 
+You may install **ralf-dialogue** from PyPI using ``pip``:
 
-<!-- ## Tutorial -->
-<!-- [**TODO**] -->
+    pip install ralf-dialogue-jhuapl
 
-<!-- ### Setting up the configuration -->
-<!-- [**TODO**: explain] -->
+#### Install from Source
 
-<!-- [**TODO**: models.yml] -->
+Alternatively, you can build the package from source. First, clone the Github repository:
 
-<!-- [**TODO**: prompts.yml] -->
+    git clone https://github.com/jhuapl-fomo/ralf-dialogue.git
 
-<!-- ### Actions Pipelines and The Action Dispatcher -->
-<!-- [**TODO**] -->
+Next, install the requirements using ``pip``:
+    
+    cd ralf-dialogue
+    pip install -r requirements.txt
 
-<!-- ### Zero-shot Classifier -->
-<!-- [**TODO**] -->
+Then, build the package using ``flit`` and install it using ``pip``:
 
-<!-- ## Read the Docs -->
-<!-- [**TODO**] -->
+    flit build
+    pip install .
 
-<!-- ## Further Reading -->
-<!-- [**TODO**] -->
+Or if you would like an editable installation, you can instead use:
+
+    pip install -e .
+
+### OpenAI Configuration
+**ralf** currently relies on language models provided by OpenAI. 
+In order to access the models, you must store your OpenAI API key as an 
+environment variable by executing the following in bash:
+
+    echo "export OPENAI_API_KEY='yourkey'" >> ~/.bashrc
+    source ~/.bashrc
+
+### Running the Demos
+To test if installation was successful, try running the demo scripts:
+
+    cd demos
+    python simple_chat.py
+
+This demo script will allow you to converse with a chatbot created using **ralf-dialogue**. Next, you can delve deeper and explore other features of the library:
+
+    python analyze_conversation.py
+
+If the scripts execute successfully, you are good to go!
+
