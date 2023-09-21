@@ -1,7 +1,7 @@
 # `ralf-dialogue`
 
 [![Documentation](https://readthedocs.org/projects/ralf-jhuapl/badge/?version=latest)](https://ralf-jhuapl.readthedocs.io/en/latest/)
-[![PyPI version](https://badge.fury.io/py/ralf-jhuapl.svg)](https://badge.fury.io/py/ralf-jhuapl)
+[![PyPI version](https://badge.fury.io/py/ralf-dialogue-jhuapl.svg)](https://badge.fury.io/py/ralf-dialogue-jhuapl)
 [![License](https://img.shields.io/github/license/jhuapl-fomo/ralf.svg)](https://github.com/jhuapl-fomo/ralf/blob/main/LICENSE)
 </div>
 
