@@ -52,8 +52,14 @@ class Conversation:
     :param ai_attribution: The attribution for AI speakers (default is 'AI').
     :type ai_attribution: str
     :param human_attribution: The attribution for human speakers 
-    (default is 'Human').
+        (default is 'Human').
     :type human_attribution: str
+    :param trim_method: The method used to trim the conversation if it exceeds
+        `max_length`. Can be 'tokens' or 'turns' (default is 'turns').
+    :type trim_method: Literal['tokens', 'turns']
+    :param max_length: The maximum length of the conversation, as measured in
+     units corresponding to the specified trim_method (default is 100 turns).
+    :type max_length: int
     """
     def __init__(
         self,
@@ -63,12 +69,7 @@ class Conversation:
         trim_method: Literal['tokens', 'turns'] = 'turns',
         max_length: int = 100
     ) -> None:
-        """
-        Initializes a new Conversation object.
-
-        :param history: Optional. The history of turns in the conversation.
-        :param ai_attribution: The attribution for AI speakers.
-        :param human_attribution: The attribution for human speakers.
+        """Constructor method
         """
         self.history = history if history else []
         self.ai_attribution = ai_attribution

@@ -19,31 +19,63 @@
 # SOFTWARE.
 
 from ralf import classifier
-
+import numpy as np
 
 #######################
 ## Intent Classifier ##
 #######################
 
 class IntentClassifier:
+    """
+    A classifier for identifying intents in natural language utterances.
+    Currently just a thin wrapper around a ZeroShotClassifier.
+
+    :param intents: A dictionary where keys are intent labels, and values are 
+        lists of example utterances for each intent.
+    :type intents: dict[str, list[str]]
+    """
+
     def __init__(
             self,
             intents: dict[str, list[str]]
     ):
-
         self.zs_classifier = classifier.ZeroShotClassifier()
 
         for intent, examples in intents.items():
             self.zs_classifier.add_class(intent, examples)
 
-    def __call__(self, utterance) -> tuple[str, str]:
+    def __call__(self, utterance: str) -> tuple[str, np.ndarray]:
+        """
+        Evaluates an utterance and returns the intent label and confidence scores.
+
+        :param utterance: The input utterance to be classified.
+        :type utterance: str
+
+        :return: A tuple containing the classified intent label and an array of 
+            confidence scores of each intent (Note: these come from a similarity
+            computation between text emitted by the generative language model
+            and the class labels, and thus do not quantify the confidence of the
+            generative model on this particular task).
+        :rtype: tuple[str, ndarray]
+        """
+
         return self.evaluate(utterance)
 
-    def evaluate(self, utterance) -> tuple[str, str]:
+    def evaluate(self, utterance: str) -> tuple[str, np.ndarray]:
         """
-        Returns an index into the edge criteron list corresponding to the 
-        predicted next edge
+        Evaluates an utterance and returns the intent label and confidence scores.
+
+        :param utterance: The input utterance to be classified.
+        :type utterance: str
+
+        :return: A tuple containing the classified intent label and an array of 
+            confidence scores of each intent (Note: these come from a similarity
+            computation between text emitted by the generative language model
+            and the class labels, and thus do not quantify the confidence of the
+            generative model on this particular task).
+        :rtype: tuple[str, ndarray]
         """
+
         label, scores = self.zs_classifier(utterance)
 
         return label, scores
