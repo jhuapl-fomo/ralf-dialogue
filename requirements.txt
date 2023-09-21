@@ -1,5 +1,2 @@
-flit
-numpy
-openai
-PyYAML
-sentence-transformers
+ralf-jhuapl
+termcolor
