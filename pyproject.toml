@@ -8,7 +8,6 @@ description = "An extension of the ralf toolkit with convenient primitives for b
 readme = "README.md"
 # license = "MIT"
 dependencies = [
-    "openai",
     "ralf-jhuapl",
     "termcolor",
 ]
